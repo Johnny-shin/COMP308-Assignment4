@@ -2,14 +2,21 @@
 //https://github.com/PacktPublishing/Hands-on-Machine-Learning-with-TensorFlow.js/tree/master/Section5_4
 //
 const tf = require("@tensorflow/tfjs");
-require("@tensorflow/tfjs-node");
+//require("@tensorflow/tfjs-node");
 //load iris training and testing data
 const iris = require("../../iris.json");
 const irisTesting = require("../../iris-testing.json");
 var lossValue;
 //
 exports.trainAndPredict = function (req, res) {
-  console.log(irisTesting);
+  console.log("sepal_length: ",req.body.sepal_length);
+  console.log("sepal_width", req.body.sepal_width);
+
+  
+  console.log("petal_width: ",req.body.petal_width);
+  console.log("petal_length: ",req.body.petal_length);
+
+  //console.log(irisTesting);
   //
   // convert/setup our data for tensorflow.js
   //
@@ -40,13 +47,20 @@ exports.trainAndPredict = function (req, res) {
   //console.log(outputData.dataSync())
   //
   //tensor of features for testing data
+  // const testingData = tf.tensor2d(
+  //   irisTesting.map((item) => [
+  //     item.sepal_length,
+  //     item.sepal_width,
+  //     item.petal_length,
+  //     item.petal_width,
+  //   ])
+  // );
+  
   const testingData = tf.tensor2d(
-    irisTesting.map((item) => [
-      item.sepal_length,
-      item.sepal_width,
-      item.petal_length,
-      item.petal_width,
-    ])
+    [[ parseFloat(req.body.sepal_length),
+      parseFloat(req.body.sepal_width),
+      parseFloat(req.body.petal_length),
+      parseFloat(req.body.petal_width)]]
   );
   //console.log(testingData.dataSync())
   //
