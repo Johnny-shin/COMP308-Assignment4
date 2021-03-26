@@ -2,14 +2,23 @@
 //https://github.com/PacktPublishing/Hands-on-Machine-Learning-with-TensorFlow.js/tree/master/Section5_4
 //
 const tf = require("@tensorflow/tfjs");
-require("@tensorflow/tfjs-node");
+//require("@tensorflow/tfjs-node");
 //load iris training and testing data
 const iris = require("../../iris.json");
-const irisTesting = require("../../iris-testing.json");
+//const irisTesting = require("../../iris-testing.json");
 var lossValue;
 //
-exports.trainAndPredict = function (req, res) {
-  console.log(irisTesting);
+exports.trainAndPredict = function (req, res) { 
+  var input_sepal_length = parseFloat(req.body.sepal_length);
+  var input_sepal_width = parseFloat(req.body.sepal_width);
+  var input_petal_width = parseFloat(req.body.petal_width);
+  var input_petal_length = parseFloat(req.body.petal_length);
+  var input_epochs = parseFloat(req.body.epochs);
+  var input_learning_rate = parseFloat(req.body.learning_rate);
+
+
+
+  //console.log(irisTesting);
   //
   // convert/setup our data for tensorflow.js
   //
@@ -40,13 +49,21 @@ exports.trainAndPredict = function (req, res) {
   //console.log(outputData.dataSync())
   //
   //tensor of features for testing data
+  // const testingData = tf.tensor2d(
+  //   irisTesting.map((item) => [
+  //     item.sepal_length,
+  //     item.sepal_width,
+  //     item.petal_length,
+  //     item.petal_width,
+  //   ])
+  // );
+  
+  // test with user input
   const testingData = tf.tensor2d(
-    irisTesting.map((item) => [
-      item.sepal_length,
-      item.sepal_width,
-      item.petal_length,
-      item.petal_width,
-    ])
+    [[ input_sepal_length,
+      input_sepal_width,
+      input_petal_length,
+      input_petal_width]]
   );
   //console.log(testingData.dataSync())
   //
@@ -78,7 +95,7 @@ exports.trainAndPredict = function (req, res) {
   //compile the model with an MSE loss function and Adam algorithm
   model.compile({
     loss: "meanSquaredError",
-    optimizer: tf.train.adam(0.06),
+    optimizer: tf.train.adam(learning_rate=input_learning_rate),
   });
   console.log(model.summary());
   //
@@ -89,7 +106,7 @@ exports.trainAndPredict = function (req, res) {
     const startTime = Date.now();
     //train the model
     await model.fit(trainingData, outputData, {
-      epochs: 100,
+      epochs: input_epochs,
       callbacks: {
         //list of callbacks to be called during training
         onEpochEnd: async (epoch, log) => {
