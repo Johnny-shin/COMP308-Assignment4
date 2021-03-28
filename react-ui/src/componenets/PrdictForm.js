@@ -19,8 +19,8 @@ function PredictForm() {
     sepal_width: "",
     petal_length: "",
     petal_width: "",
-    input_epochs: "",
-    input_learning_rate: "",
+    epochs: "",
+    learning_rate: "",
     species: "",
   });
 
@@ -59,8 +59,8 @@ function PredictForm() {
       sepal_width: "",
       petal_length: "",
       petal_width: "",
-      input_epochs: "",
-      input_learning_rate: "",
+      epochs: "",
+      learning_rate: "",
       species: "",
     });
 
@@ -127,21 +127,21 @@ function PredictForm() {
               <Form.Label>Epochs</Form.Label>
               <Form.Control
                 type="number"
-                name="input_epochs"
-                id="input_epochs"
+                name="epochs"
+                id="epochs"
                 placeholder="Enter epoch"
-                value={flowerData.input_epochs}
+                value={flowerData.epochs}
                 onChange={onChange}
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Sepal learning rate</Form.Label>
+              <Form.Label>learning rate</Form.Label>
               <Form.Control
                 type="number"
-                name="input_learning_rate"
-                id="input_learning_rate"
+                name="learning_rate"
+                id="learning_rate"
                 placeholder="Enter learning rate"
-                value={flowerData.input_learning_rate}
+                value={flowerData.learning_rate}
                 onChange={onChange}
               />
             </Form.Group>

@@ -8,15 +8,14 @@ const iris = require("../../iris.json");
 //const irisTesting = require("../../iris-testing.json");
 var lossValue;
 //
-exports.trainAndPredict = function (req, res) { 
+exports.trainAndPredict = function (req, res) {
+  console.log(req.body);
   var input_sepal_length = parseFloat(req.body.sepal_length);
   var input_sepal_width = parseFloat(req.body.sepal_width);
   var input_petal_width = parseFloat(req.body.petal_width);
   var input_petal_length = parseFloat(req.body.petal_length);
-  var input_epochs = parseFloat(req.body.epochs);
+  var input_epochs = parseInt(req.body.epochs);
   var input_learning_rate = parseFloat(req.body.learning_rate);
-
-
 
   //console.log(irisTesting);
   //
@@ -33,7 +32,12 @@ exports.trainAndPredict = function (req, res) {
     ])
   );
   //console.log(trainingData.dataSync())
-  //
+  //Float32Array(4) [
+  //   5.400000095367432,
+  //   3.9000000953674316,
+  //   1.7000000476837158,
+  //   0.4000000059604645
+  // ]
   //tensor of output for training data
   //the values for species will be:
   // setosa:       1,0,0
@@ -57,15 +61,18 @@ exports.trainAndPredict = function (req, res) {
   //     item.petal_width,
   //   ])
   // );
-  
+
   // test with user input
-  const testingData = tf.tensor2d(
-    [[ input_sepal_length,
+  const testingData = tf.tensor2d([
+    [
+      input_sepal_length,
       input_sepal_width,
       input_petal_length,
-      input_petal_width]]
-  );
-  //console.log(testingData.dataSync())
+      input_petal_width,
+    ],
+  ]);
+  console.log(testingData.dataSync());
+  console.log("input_epochs", input_epochs);
   //
   // build neural network using a sequential model
   const model = tf.sequential();
@@ -95,7 +102,7 @@ exports.trainAndPredict = function (req, res) {
   //compile the model with an MSE loss function and Adam algorithm
   model.compile({
     loss: "meanSquaredError",
-    optimizer: tf.train.adam(learning_rate=input_learning_rate),
+    optimizer: tf.train.adam((learning_rate = input_learning_rate)),
   });
   console.log(model.summary());
   //
